@@ -1,11 +1,39 @@
+/**
+* @Author: Juan Miguel Diago <juanmi>
+* @Date:   03-01-2017
+* @Email:  jumidi@gmail.com
+* @Last modified by:   juanmi
+* @Last modified time: 03-01-2017
+*/
+
+
+
 'use strict';
 
-angular.module('angularMaterialAdmin', ['ngAnimate', 'ngCookies',
-  'ngSanitize', 'ui.router', 'ngMaterial', 'nvd3', 'app'])
+angular.module('ubdashboardAdmin', ['ngAnimate', 'ngCookies',
+  'ngSanitize', 'ui.router', 'ngMaterial', 'nvd3', 'ubdashboard'])
 
   .config(function ($stateProvider, $urlRouterProvider, $mdThemingProvider,
                     $mdIconProvider) {
     $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: 'app/views/login.html',
+        controller: 'LoginController',
+        controllerAs: 'vm',
+        data : {
+          title: 'Login'
+        }
+      })
+      .state('register', {
+        url: '/register',
+        templateUrl: 'app/views/register.html',
+        controller: 'RegisterController',
+        controllerAs: 'vm',
+        data: {
+          title: 'Register'
+        }
+      })
       .state('home', {
         url: '',
         templateUrl: 'app/views/main.html',
@@ -39,11 +67,11 @@ angular.module('angularMaterialAdmin', ['ngAnimate', 'ngCookies',
         }
       });
 
-    $urlRouterProvider.otherwise('/dashboard');
+    $urlRouterProvider.otherwise('/login');
 
     $mdThemingProvider
       .theme('default')
-        .primaryPalette('grey', {
+        .primaryPalette('blue', {
           'default': '600'
         })
         .accentPalette('teal', {

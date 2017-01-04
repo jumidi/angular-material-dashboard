@@ -1,3 +1,13 @@
+/**
+* @Author: Juan Miguel Diago <juanmi>
+* @Date:   03-01-2017
+* @Email:  jumidi@gmail.com
+* @Last modified by:   juanmi
+* @Last modified time: 03-01-2017
+*/
+
+
+
 'use strict';
 
 var gulp = require('gulp');
@@ -19,7 +29,7 @@ gulp.task('partials', function () {
       quotes: true
     }))
     .pipe($.angularTemplatecache('templateCacheHtml.js', {
-      module: 'angularMaterialAdmin'
+      module: 'ubdashboardAdmin'
     }))
     .pipe(gulp.dest(paths.tmp + '/partials/'));
 });
