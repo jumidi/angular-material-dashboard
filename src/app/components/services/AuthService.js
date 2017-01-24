@@ -2,113 +2,116 @@
  * @Author: Juan Miguel Diago <juanmi>
  * @Date:   03-01-2017
  * @Email:  jumidi@gmail.com
- * @Last modified by:   juanmi
- * @Last modified time: 03-01-2017
+* @Last modified by:   juanmi
+* @Last modified time: 10-01-2017
  */
 (function() {
     'use strict';
     angular.module('app')
-        .service('AuthService', ['$q', '$timeout', '$http',
-            AuthService
-        ]);
+      .service('AuthService', ['$q', '$log', '$timeout', '$http', 'HomeService',
+      function($q, $log, $timeout, $http, home) {
+          var user = null;
+          var baseUrl = home.protocol + '://' + home.url + ':' + home.port;
+          function isLoggedIn() {
+              if (user) {
+                  return true;
+              } else {
+                  return false;
+              }
+          }
 
-    function AuthService($q, $timeout, $http) {
+          function getUserStatus() {
+              return $http.get(baseUrl + '/user/status')
+                  .then(function(resp) {
+                    var data = resp.data;
+                      if (data.status) {
+                          user = true;
+                      } else {
+                          user = false;
+                      }
+                  }, function(data) {
+                      user = false;
+                      //console.log(data);
+                  });
+          }
 
-        var user = null;
+          function login(user) {
+              var deferred = $q.defer();
 
-        return ({
-            isLoggedIn: isLoggedIn,
-            getUserStatus: getUserStatus,
-            login: login,
-            logout: logout,
-            register: register
-        });
+              $http.post(baseUrl + '/user/login', {
+                      username: user.username,
+                      password: user.password
+                  })
+                  .then(function(resp) {
+                          var data = resp.data;
+                          var status = resp.status;
+                          if (status === 200 && data.status) {
+                            $log.info('ok');
+                              user = true;
+                              deferred.resolve();
+                          } else {
+                              user = false;
+                              deferred.reject();
+                          }
+                      },
+                      function(data) {
+                          user = false;
+                          deferred.reject();
+                      });
 
-        function isLoggedIn() {
-            if (user) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+              return deferred.promise;
+          }
 
-        function getUserStatus() {
-            return $http.get('/user/status')
-                .then(function(data) {
-                    if (data.status) {
-                        user = true;
-                    } else {
-                        user = false;
-                    }
-                }, function(data) {
-                    user = false;
-                });
-        }
+          function logout() {
+              var deferred = $q.defer();
 
-        function login(user) {
-            var deferred = $q.defer();
+              $http.get(baseUrl + '/user/logout')
+                  .then(function(data) {
+                      user = false;
+                      deferred.resolve();
+                  }, function(data) {
+                      user = false;
+                      deferred.reject();
+                  });
 
-            $http.post('/user/login', {
-                    username: user.username,
-                    password: user.password
-                })
-                .then(function(data, status) {
-                        if (status === 200 && data.status) {
-                            user = true;
-                            deferred.resolve();
-                        } else {
-                            user = false;
-                            deferred.reject();
-                        }
-                    },
-                    function(data) {
-                        user = false;
-                        deferred.reject();
-                    });
+              return deferred.promise;
+          }
 
-            return deferred.promise;
-        }
+          function register(user) {
 
-        function logout() {
-            var deferred = $q.defer();
+              // create a new instance of deferred
+              var deferred = $q.defer();
 
-            $http.get('/user/logout')
-                .then(function(data) {
-                    user = false;
-                    deferred.resolve();
-                }, function(data) {
-                    user = false;
-                    deferred.reject();
-                });
+              // send a post request to the server
+              $http.post(baseUrl + '/user/register', {
+                  username: user.username,
+                  password: user.password
+              }).then(function(resp) {
+                      var data = resp.data;
+                      var status = resp.status;
+                      if (status === 200 && data.status) {
+                          deferred.resolve();
+                      } else {
+                          deferred.reject();
+                      }
+                  },
+                  function(data) {
+                      deferred.reject();
+                  });
 
-            return deferred.promise;
-        }
+              // return promise object
+              return deferred.promise;
 
-        function register(user) {
+          }
 
-            // create a new instance of deferred
-            var deferred = $q.defer();
+          return ({
+              isLoggedIn: isLoggedIn,
+              getUserStatus: getUserStatus,
+              login: login,
+              logout: logout,
+              register: register
+          });
 
-            // send a post request to the server
-            $http.post('/user/register', {
-                username: user.username,
-                password: user.password
-            }).then(function(data, status) {
-                    if (status === 200 && data.status) {
-                        deferred.resolve();
-                    } else {
-                        deferred.reject();
-                    }
-                },
-                function(data) {
-                    deferred.reject();
-                });
-
-            // return promise object
-            return deferred.promise;
-
-        }
-
-
-    }
+      }
+]);
 })();
