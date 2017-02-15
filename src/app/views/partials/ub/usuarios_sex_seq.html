@@ -1,0 +1,14 @@
+<div ng-controller="UsersController as vm">
+  <md-content ng-show="$showOptions" class="options">
+    <md-radio-group ng-model="vm.sexPeriod" ng-change="vm.changeSexPeriod()">
+      <md-radio-button value="day">Día</md-radio-button>
+      <md-radio-button value="week">Semana</md-radio-button>
+      <md-radio-button value="month">Mes</md-radio-button>
+      <md-radio-button value="year">Año</md-radio-button>
+    </md-radio-group>
+  </md-content>
+
+  <md-content class="md-padding">
+    <nvd3 options="vm.chartSeqSexOptions" data="vm.seqSexChartData"></nvd3>
+  </md-content>
+</div>

@@ -1,3 +1,11 @@
+// @Author: Juan Miguel Diago <juanmi>
+// @Date:   27-01-2017
+// @Email:  jumidi@gmail.com
+// @Last modified by:   juanmi
+// @Last modified time: 06-02-2017
+
+
+
 // COLORS
 $main-bg-color: #ECECEC;
 $text-color: #7A7A7A;
@@ -170,4 +178,9 @@ md-backdrop.md-sidenav-backdrop {
 
 .orange .md-container {
   background-color: rgb(255, 236, 201)
+}
+
+.fill-chart {
+  width:100%;
+  height:100%;
 }
