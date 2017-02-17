@@ -1,0 +1,9 @@
+{
+    "ENV": {
+        "name": "devel",
+        "api": {
+            "endpoint": "http://ubdashboard.dev:3340",
+            "token": "mideveltoken"
+        }
+    }
+}

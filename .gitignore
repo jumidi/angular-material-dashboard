@@ -1,7 +1,15 @@
+
+# Runtime
 node_modules/
 bower_components/
+
+# Temporary data
 .sass-cache/
 .tmp/
+
+# Production
 dist/
+
+# Development
 .idea/
 .publish/

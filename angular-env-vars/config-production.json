@@ -1,0 +1,9 @@
+{
+    "ENV": {
+        "name": "devel",
+        "api": {
+            "endpoint": "http://data.unobrain.com",
+            "token": "miprodtoken"
+        }
+    }
+}
